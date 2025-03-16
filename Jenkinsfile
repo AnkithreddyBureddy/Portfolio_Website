@@ -13,28 +13,50 @@ pipeline {
                 script {
                     echo 'Checking out the code from GitHub repository...'
                     // Pulling the code from the specified GitHub repository and branch
-                    git url: REPO_URL, branch: BRANCH
+                    git branch: BRANCH, url: REPO_URL
                 }
             }
         }
 
-        // Stage 2: Build (Simulated step for a static HTML website)
+        // Stage 2: List Files (Debugging stage)
+        stage('List Files') {
+            steps {
+                script {
+                    echo 'Listing files in the workspace...'
+                    // You can list files to debug if the checkout was successful
+                    sh 'ls -la'  // On Linux/Unix systems or use 'dir' for Windows
+                }
+            }
+        }
+
+        // Stage 3: Setup (Dependencies or preparation step)
+        stage('Setup') {
+            steps {
+                script {
+                    echo 'Setting up environment for website build...'
+                    // Any additional setup or preparation tasks can be added here
+                    // e.g., installing dependencies for the site (e.g., using npm, yarn, etc. for static assets)
+                }
+            }
+        }
+
+        // Stage 4: Build (Simulated build for a static website)
         stage('Build') {
             steps {
                 script {
-                    echo 'Building the website...'
-                    // For a static HTML website, you could minify CSS, JavaScript, or add other build tasks here
-                    // Example placeholder for building the project
+                    echo 'Building the static website...'
+                    // For a static website, you could minify CSS, bundle JS, or other tasks
+                    // This can also include compressing assets or other build-related tasks
                 }
             }
         }
 
-        // Stage 3: Test (Basic test step)
+        // Stage 5: Test (Basic test stage)
         stage('Test') {
             steps {
                 script {
-                    echo 'Running basic tests...'
-                    // For example, checking if the 'index.html' file exists
+                    echo 'Running tests...'
+                    // Here we check if certain files exist as a basic test for the static site
                     def file = 'index.html'
                     if (!fileExists(file)) {
                         error "Test failed: ${file} not found!"
@@ -45,13 +67,26 @@ pipeline {
             }
         }
 
-        // Stage 4: Deploy (Optional step for deployment)
+        // Stage 6: Deploy (Optional, if deploying to any hosting platform)
         stage('Deploy') {
             steps {
                 script {
                     echo 'Deploying the website...'
-                    // You can deploy the website to any hosting platform, such as GitHub Pages, AWS, or GCP
-                    // Example placeholder for deployment, add your deployment steps here
+                    // You can add steps to deploy to GitHub Pages, AWS, GCP, or any hosting service
+                    // Example: Using GitHub Pages or another cloud provider for static hosting
+                }
+            }
+        }
+
+        // Stage 7: Notify (Send email notification)
+        stage('Notify') {
+            steps {
+                script {
+                    echo 'Sending email notification...'
+                    // Notifying team or user about the build status (success or failure)
+                    mail to: 'your.email@example.com',
+                         subject: "Jenkins Build Notification",
+                         body: "The Jenkins build has completed. Check Jenkins for details."
                 }
             }
         }
@@ -60,14 +95,10 @@ pipeline {
     // Post-build actions (notifications)
     post {
         success {
-            mail to: 'your.email@example.com',
-                 subject: "Build Successful: ${env.JOB_NAME}",
-                 body: "The build was successful. Check the Jenkins job for details."
+            echo "Build was successful!"
         }
         failure {
-            mail to: 'your.email@example.com',
-                 subject: "Build Failed: ${env.JOB_NAME}",
-                 body: "The build failed. Please check Jenkins for the details."
+            echo "Build failed!"
         }
     }
 }
