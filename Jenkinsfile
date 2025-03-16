@@ -73,7 +73,7 @@ pipeline {
             steps {
                 script {
                     echo 'Sending email notification...'
-                    mail to: 'your.email@example.com',
+                    mail to: 'ankithreddyb90@gmail.com',
                          subject: "Jenkins Build Notification",
                          body: "The Jenkins build has completed. Check Jenkins for details."
                 }
