@@ -2,37 +2,39 @@ pipeline {
     agent any
 
     environment {
-        // Define repository URL and branch
         REPO_URL = 'https://github.com/AnkithreddyBureddy/Portfolio_Website.git'
-        BRANCH = 'main'  // Specify the branch you want Jenkins to monitor
+        BRANCH = 'main'  // Change to your branch name if it's different
     }
 
     stages {
         // Stage 1: Checkout the code from GitHub
         stage('Checkout') {
             steps {
-                // Pull the code from GitHub repository
-                git url: REPO_URL, branch: BRANCH
-            }
-        }
-        
-        // Stage 2: Build (Simulated step for a static website)
-        stage('Build') {
-            steps {
-                echo 'Building the website...'
-                // For a simple HTML website, this step is just a placeholder
-                // You can add steps like minifying CSS/JS or other build steps if necessary
+                script {
+                    echo 'Checking out the code from GitHub repository...'
+                    // Pulling the code from the specified GitHub repository and branch
+                    git url: REPO_URL, branch: BRANCH
+                }
             }
         }
 
-        // Stage 3: Run Tests (Simulated step)
+        // Stage 2: Build (Simulated step for a static HTML website)
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building the website...'
+                    // For a static HTML website, you could minify CSS, JavaScript, or add other build tasks here
+                    // Example placeholder for building the project
+                }
+            }
+        }
+
+        // Stage 3: Test (Basic test step)
         stage('Test') {
             steps {
-                echo 'Running basic tests...'
-                // Here you can add commands to check if files like index.html, styles.css, etc. exist
-                // Or you could run basic validation for your static site
-                // For example, a simple test could be checking the existence of the index.html file
                 script {
+                    echo 'Running basic tests...'
+                    // For example, checking if the 'index.html' file exists
                     def file = 'index.html'
                     if (!fileExists(file)) {
                         error "Test failed: ${file} not found!"
@@ -43,10 +45,29 @@ pipeline {
             }
         }
 
-        // Stage 4: Deploy (Optional step)
+        // Stage 4: Deploy (Optional step for deployment)
         stage('Deploy') {
             steps {
-                echo 'Deploying website...'
-                // You can deploy the site to any platform like AWS, GCP, or any static hosting platform like GitHub Pages
-                // For example, you could use AWS CLI or Firebase CLI to deploy
-                // Here, just a pl
+                script {
+                    echo 'Deploying the website...'
+                    // You can deploy the website to any hosting platform, such as GitHub Pages, AWS, or GCP
+                    // Example placeholder for deployment, add your deployment steps here
+                }
+            }
+        }
+    }
+
+    // Post-build actions (notifications)
+    post {
+        success {
+            mail to: 'your.email@example.com',
+                 subject: "Build Successful: ${env.JOB_NAME}",
+                 body: "The build was successful. Check the Jenkins job for details."
+        }
+        failure {
+            mail to: 'your.email@example.com',
+                 subject: "Build Failed: ${env.JOB_NAME}",
+                 body: "The build failed. Please check Jenkins for the details."
+        }
+    }
+}
