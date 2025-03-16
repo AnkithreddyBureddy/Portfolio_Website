@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+    stage('Checkout') {
             steps {
                 script {
                     echo 'Checking out the code from GitHub repository...'
@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-        stage('List Files') {
+    stage('List Files') {
             steps {
                 script {
                     echo 'Listing files in the workspace...'
@@ -27,7 +27,7 @@ pipeline {
             }
         }
 
-        stage('Setup') {
+    stage('Setup') {
             steps {
                 script {
                     echo 'Setting up environment for website build...'
@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+    stage('Build') {
             steps {
                 script {
                     echo 'Building the static website...'
@@ -45,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
+    stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
@@ -60,7 +60,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+    stage('Deploy') {
             steps {
                 script {
                     echo 'Deploying the website...'
@@ -69,7 +69,7 @@ pipeline {
             }
         }
 
-        stage('Notify') {
+    stage('Notify') {
             steps {
                 script {
                     echo 'Sending email notification...'
