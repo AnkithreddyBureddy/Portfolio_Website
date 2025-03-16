@@ -7,7 +7,6 @@ pipeline {
     }
 
     stages {
-        // Stage 1: Checkout the code from GitHub
         stage('Checkout') {
             steps {
                 script {
@@ -18,45 +17,39 @@ pipeline {
             }
         }
 
-        // Stage 2: List Files (Debugging stage)
         stage('List Files') {
             steps {
                 script {
                     echo 'Listing files in the workspace...'
-                    // You can list files to debug if the checkout was successful
-                    sh 'ls -la'  // On Linux/Unix systems or use 'dir' for Windows
+                    sh 'ls -la'  // If you're on a Unix-based system, use 'ls -la'
+                    // For Windows, you can use: 'dir'
                 }
             }
         }
 
-        // Stage 3: Setup (Dependencies or preparation step)
         stage('Setup') {
             steps {
                 script {
                     echo 'Setting up environment for website build...'
-                    // Any additional setup or preparation tasks can be added here
-                    // e.g., installing dependencies for the site (e.g., using npm, yarn, etc. for static assets)
+                    // Placeholder for any additional setup if needed
                 }
             }
         }
 
-        // Stage 4: Build (Simulated build for a static website)
         stage('Build') {
             steps {
                 script {
                     echo 'Building the static website...'
-                    // For a static website, you could minify CSS, bundle JS, or other tasks
-                    // This can also include compressing assets or other build-related tasks
+                    // Example build command, replace with actual build commands
                 }
             }
         }
 
-        // Stage 5: Test (Basic test stage)
         stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
-                    // Here we check if certain files exist as a basic test for the static site
+                    // Basic test for the static website
                     def file = 'index.html'
                     if (!fileExists(file)) {
                         error "Test failed: ${file} not found!"
@@ -67,23 +60,19 @@ pipeline {
             }
         }
 
-        // Stage 6: Deploy (Optional, if deploying to any hosting platform)
         stage('Deploy') {
             steps {
                 script {
                     echo 'Deploying the website...'
-                    // You can add steps to deploy to GitHub Pages, AWS, GCP, or any hosting service
-                    // Example: Using GitHub Pages or another cloud provider for static hosting
+                    // Placeholder for deployment steps if needed
                 }
             }
         }
 
-        // Stage 7: Notify (Send email notification)
         stage('Notify') {
             steps {
                 script {
                     echo 'Sending email notification...'
-                    // Notifying team or user about the build status (success or failure)
                     mail to: 'your.email@example.com',
                          subject: "Jenkins Build Notification",
                          body: "The Jenkins build has completed. Check Jenkins for details."
@@ -92,7 +81,6 @@ pipeline {
         }
     }
 
-    // Post-build actions (notifications)
     post {
         success {
             echo "Build was successful!"
